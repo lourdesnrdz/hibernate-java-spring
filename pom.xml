@@ -91,17 +91,17 @@
 							<name>lourdesnrdz/${project.build.finalName}</name>
 							<build>
 								<from>openjdk:latest</from>
-								<entryPoint>java -Dspring.profiles.active=prod -jar /Users/lourdes.b.rodriguez/Documents/platzi/${project.build.finalName}.jar</entryPoint>
+								<entryPoint>java -Dspring.profiles.active=prod -jar /Users/lourdes.b.rodriguez/Documents/platzi/application/${project.build.finalName}.jar</entryPoint>
 								<assembly>
-									<basedir>/Users/lourdes.b.rodriguez/Documents/platzi/</basedir>
+									<basedir>/Users/lourdes.b.rodriguez/Documents/platzi/application/</basedir>
 									<descriptorRef>artifact</descriptorRef>
 									<inline>
-										<id>assembly</id>
-										<files>
-											<file>
-												<source>target/${project.build.finalName}</source>
-											</file>
-										</files>
+									<id>assembly</id>
+									<files>
+										<file>
+											<source>target/${project.build.finalName}.jar</source>
+										</file>
+									</files>
 									</inline>
 								</assembly>
 								<tags>
@@ -114,7 +114,7 @@
 							<run>
 								<namingStrategy>alias</namingStrategy>
 							</run>
-							<alias>${project.build.finalName}</alias>
+							<alias>{project.build.finalName}</alias>
 						</image>
 					</images>
 				</configuration>
