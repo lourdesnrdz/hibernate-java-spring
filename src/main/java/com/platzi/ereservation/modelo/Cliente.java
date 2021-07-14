@@ -24,7 +24,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "cliente")
-@NamedQuery(name = "Cliente.findByIdentificacionCli", query="Select c from Cliente c where c.idCli = ?1")
+@NamedQuery(name = "Cliente.findByIdentificacionCli", query="Select c from Cliente c where c.identificacionCli = ?1")
 public class Cliente {
 	@Id
 	@GeneratedValue(generator="system-uuid")
