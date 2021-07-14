@@ -20,38 +20,52 @@ import com.platzi.ereservation.modelo.Cliente;
 import com.platzi.ereservation.negocio.services.ClienteService;
 import com.platzi.ereservation.vista.resources.vo.ClienteVO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * Clase que representa el servicio web de cliente
+ * 
  * @author lourdes.b.rodriguez
  *
  */
 @RestController
 @RequestMapping("/api/cliente")
+@Api(tags = "cliente")
 public class ClienteResource {
-	
+
 	private final ClienteService clienteService;
-	
+
 	public ClienteResource(ClienteService clienteService) {
 		this.clienteService = clienteService;
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Cliente> createCliente(@RequestBody ClienteVO clienteVo){
+	@ApiOperation(value = "Crear Cliente", notes = "Servicio para crear un nuevo Cliente")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Cliente creado correctamente"),
+			@ApiResponse(code = 400, message = "Solicitud inválida") })
+	public ResponseEntity<Cliente> createCliente(@RequestBody ClienteVO clienteVo) {
 		Cliente cliente = new Cliente();
 		cliente.setNombreCli(clienteVo.getNombreCli());
 		cliente.setApellidoCli(clienteVo.getApellidoCli());
 		cliente.setDireccionCli(clienteVo.getDireccionCli());
 		cliente.setTelefonoCli(clienteVo.getTelefonoCli());
 		cliente.setEmailCli(clienteVo.getEmailCli());
-		
+
 		return new ResponseEntity<>(this.clienteService.create(cliente), HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/{identificacion}")
-	public ResponseEntity<Cliente> createCliente(@PathVariable("identificacion") String identificacion, Cliente clienteVo){
+	@ApiOperation(value = "Actualizar Cliente", notes = "Servicio para actualizar un nuevo Cliente")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Cliente actualizado correctamente"),
+			@ApiResponse(code = 404, message = "Cliente no encontrado") })
+	public ResponseEntity<Cliente> createCliente(@PathVariable("identificacion") String identificacion,
+			Cliente clienteVo) {
 		Cliente cliente = this.clienteService.findByIdentificacionCli(identificacion);
-		
-		if(cliente == null) {
+
+		if (cliente == null) {
 			return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
 		} else {
 			cliente.setNombreCli(clienteVo.getNombreCli());
@@ -60,22 +74,28 @@ public class ClienteResource {
 			cliente.setTelefonoCli(clienteVo.getTelefonoCli());
 			cliente.setEmailCli(clienteVo.getEmailCli());
 		}
-		
+
 		return new ResponseEntity<>(this.clienteService.update(cliente), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/{identificacion}")
+	@ApiOperation(value = "Eliminar Cliente", notes = "Servicio para eliminar un nuevo Cliente")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Cliente eliminado correctamente"),
+			@ApiResponse(code = 404, message = "Cliente no encontrado") })
 	public void removeCliente(@PathVariable("identificacion") String identificacion) {
 		Cliente cliente = this.clienteService.findByIdentificacionCli(identificacion);
-		
-		if(cliente != null) {
+
+		if (cliente != null) {
 			this.clienteService.delete(cliente);
-		} 
+		}
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<Cliente>> findAll(){
+	@ApiOperation(value = "Listar Clientes", notes = "Servicio para listar todos los clientes")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Clientes encontrados"),
+			@ApiResponse(code = 404, message = "Clientes no encontrados") })
+	public ResponseEntity<List<Cliente>> findAll() {
 		return ResponseEntity.ok(this.clienteService.findAll());
 	}
-	
+
 }
