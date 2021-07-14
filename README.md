@@ -1,4 +1,4 @@
-# hibernate-java-spring
+# Hibernate Java Spring
 Hibernate and Java Spring Course
 
 ## Table of contents
